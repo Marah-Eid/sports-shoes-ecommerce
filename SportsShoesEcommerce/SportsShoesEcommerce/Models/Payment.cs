@@ -19,6 +19,6 @@ namespace SportsShoesEcommerce.Models
 
         public DateTime PaymentDate { get; set; } = DateTime.Now;
 
-        public string? TransactionId { get; set; }
+        public string? TransactionnId { get; set; }
     }
 }
