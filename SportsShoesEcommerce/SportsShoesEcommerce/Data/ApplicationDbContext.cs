@@ -39,6 +39,12 @@ namespace SportsShoesEcommerce.Data
         public DbSet<ContactMessage> ContactMessages { get; set; }
 
 
+        public DbSet<Testimonial> Testimonials { get; set; }
+
+        public DbSet<Discount> Discounts { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

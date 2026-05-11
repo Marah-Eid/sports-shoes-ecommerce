@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using SportsShoesEcommerce.Models.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportsShoesEcommerce.Models
 {
@@ -15,7 +16,7 @@ namespace SportsShoesEcommerce.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
 
-        public string OrderStatus { get; set; } = "Pending";
+        public OrderStatus OrderStatus { get; set; }
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
 

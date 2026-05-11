@@ -11,6 +11,7 @@ namespace SportsShoesEcommerce.Models
         public bool IsBlocked { get; set; } = false;
 
         public string? ProfileImage { get; set; }
+        public ICollection<Testimonial>? Testimonials { get; set; }
 
     }
 }
