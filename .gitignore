@@ -1,6 +1,43 @@
 ﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+# .gitignore for Visual Studio / ASP.NET projects
 ################################################################################
 
-/SportsShoesEcommerce/.vs
-/SportsShoesEcommerce/SportsShoesEcommerce/obj
+## Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Ll]og/
+[Ll]ogs/
+x64/
+x86/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## .NET / ASP.NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.pdb
+*.dll.config
+
+## NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## OS files
+Thumbs.db
+.DS_Store
+
+## User-specific files (optional - uncomment if each dev has their own)
+# appsettings.Development.json
