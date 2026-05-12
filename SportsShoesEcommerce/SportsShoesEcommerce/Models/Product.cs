@@ -22,8 +22,6 @@ namespace SportsShoesEcommerce.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public bool IsDeleted { get; set; } = false;
-        public bool IsApproved { get; set; } = false;
-
         public int BrandId { get; set; }
         public Brand? Brand { get; set; }
 

@@ -16,6 +16,8 @@ namespace SportsShoesEcommerce.Models
         public int Rating { get; set; }
 
         public string? Comment { get; set; }
+        public bool IsApproved { get; set; } = false;
+
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
