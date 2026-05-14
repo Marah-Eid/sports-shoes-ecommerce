@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using SportsShoesEcommerce.Data;
 using SportsShoesEcommerce.Models;
 
-namespace SportsShoesEcommerce.Controllers
+namespace SportsShoesEcommerce.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -61,7 +62,7 @@ namespace SportsShoesEcommerce.Controllers
             if (imageFile != null && imageFile.Length > 0)
             {
                 // تجهيز المجلد والمسار
-                string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "categories");
                 if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
@@ -108,7 +109,8 @@ namespace SportsShoesEcommerce.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ImagePath,IsDeleted")] Category category)
+        // 1. أضفنا IFormFile imageFile لاستقبال الصورة الجديدة
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ImagePath,IsDeleted")] Category category, IFormFile? imageFile)
         {
             if (id != category.Id)
             {
@@ -119,6 +121,36 @@ namespace SportsShoesEcommerce.Controllers
             {
                 try
                 {
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        // 2. تحديد المسار لمجلد categories
+                        string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "categories");
+
+                        // التأكد من وجود المجلد
+                        if (!Directory.Exists(folderPath))
+                        {
+                            Directory.CreateDirectory(folderPath);
+                        }
+
+                        // 3. توليد اسم جديد وحفظ الملف
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                        string filePath = Path.Combine(folderPath, fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        // 4. تعيين اسم الصورة الجديد في الموديل
+                        category.ImagePath = fileName;
+                    }
+                    else
+                    {
+                        // 5. حركة ذكية: إذا لم يرفع صورة، نمنع الـ Entity Framework من تعديل حقل الصورة
+                        // لضمان بقاء الصورة القديمة كما هي في قاعدة البيانات
+                        _context.Entry(category).Property(x => x.ImagePath).IsModified = false;
+                    }
+
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
