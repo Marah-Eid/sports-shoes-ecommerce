@@ -12,10 +12,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// ≈÷«›… Œœ„«  Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -26,9 +29,8 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-        await DbSeeder.SeedAllAsync(context, userManager, roleManager);
+        // „·«ÕŸ…:  √ﬂœÌ √‰ IdentityRole „÷«›… ›Ì Œœ„«  Identity ›Êﬁ ≈–« ﬂ‰ ˆ  ” Œœ„Ì‰ Roles
+        // builder.Services.AddDefaultIdentity<ApplicationUser>().AddRoles<IdentityRole>()...
     }
     catch (Exception ex)
     {
@@ -45,7 +47,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -54,11 +55,24 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
+app.UseAuthentication();
+
 app.UseAuthorization();
 
+// --- «· ⁄œÌ· «·ÃÊÂ—Ì Â‰« ---
+
+// 1.  ⁄—Ì› „”«— «·‹ Areas (ÌÃ» √‰ ÌﬂÊ‰ «·√Ê·)
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+// 2.  ⁄—Ì› «·„”«— «·«› —«÷Ì (··„” Œœ„Ì‰ «·⁄«œÌÌ‰)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();
