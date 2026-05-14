@@ -17,6 +17,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -53,6 +56,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
