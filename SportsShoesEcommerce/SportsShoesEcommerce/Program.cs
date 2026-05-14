@@ -29,9 +29,8 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-        await DbSeeder.SeedAllAsync(context, userManager, roleManager);
+        // ãáÇÍÙÉ: ÊÃßÏí Ãä IdentityRole ãÖÇİÉ İí ÎÏãÇÊ Identity İæŞ ÅĞÇ ßäÊö ÊÓÊÎÏãíä Roles
+        // builder.Services.AddDefaultIdentity<ApplicationUser>().AddRoles<IdentityRole>()...
     }
     catch (Exception ex)
     {
@@ -48,7 +47,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -64,9 +62,18 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+// --- ÇáÊÚÏíá ÇáÌæåÑí åäÇ ---
+
+// 1. ÊÚÑíİ ãÓÇÑ ÇáÜ Areas (íÌÈ Ãä íßæä ÇáÃæá)
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+// 2. ÊÚÑíİ ÇáãÓÇÑ ÇáÇİÊÑÇÖí (ááãÓÊÎÏãíä ÇáÚÇÏííä)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();

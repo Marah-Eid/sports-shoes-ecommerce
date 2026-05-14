@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\images\brands\" />
     <Folder Include="wwwroot\images\categories\" />
     <Folder Include="wwwroot\images\products\" />
@@ -25,8 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\brands\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\images\categories\" />
+    <Folder Include="wwwroot\images\brands\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 
