@@ -479,6 +479,46 @@
     <script src="~/user/js/jquery-1.11.0.min.js"></script>
     <script src="~/user/js/plugins.js"></script>
     <script src="~/user/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '@TempData["Success"]',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '@TempData["Error"]',
+                timer: 2500,
+                showConfirmButton: false
+            });
+        </script>
+    }
+
+    @if (TempData["Info"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'info',
+                title: 'Info',
+                text: '@TempData["Info"]',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    }
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

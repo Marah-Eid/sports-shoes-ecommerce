@@ -6,6 +6,9 @@
     var mainImage = Model.ProductImages?.FirstOrDefault(x => x.IsMain)?.ImagePath
                     ?? Model.ProductImages?.FirstOrDefault()?.ImagePath
                     ?? "/images/no-image.png";
+
+    var hasAvailableStock = Model.ProductVariants != null &&
+                            Model.ProductVariants.Any(v => v.StockQuantity > 0);
 }
 
 <div class="row">
@@ -43,6 +46,8 @@
         @if (Model.ProductVariants != null && Model.ProductVariants.Any())
         {
             <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                @Html.AntiForgeryToken()
+
                 <select name="productVariantId" class="form-control mb-3" required>
                     <option value="">Select size / color</option>
 
@@ -63,7 +68,7 @@
                     }
                 </select>
 
-                <button type="submit" class="btn btn-dark">
+                <button type="submit" class="btn btn-dark" disabled="@(!hasAvailableStock)">
                     Add To Cart
                 </button>
             </form>
@@ -72,5 +77,9 @@
         {
             <p class="text-danger">No variants available.</p>
         }
+
+        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary mt-3">
+            Back to Products
+        </a>
     </div>
 </div>
