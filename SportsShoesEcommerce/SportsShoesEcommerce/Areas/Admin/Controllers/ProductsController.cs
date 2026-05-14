@@ -28,7 +28,7 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var products = _context.Products
-                .Include(p => p.Brand)
+          .Include(p => p.Brand)
                 .Include(p => p.Category)
                 .Include(p => p.ProductImages);
 
@@ -41,6 +41,7 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
             if (id == null) return NotFound();
 
             var product = await _context.Products
+                .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
                 .Include(p => p.ProductImages)
@@ -153,7 +154,7 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
-        {
+            {
             if (id == null) return NotFound();
 
             var product = await _context.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(x => x.Id == id);
@@ -162,7 +163,7 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name", product.BrandId);
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             return View(product);
-        }
+            }
 
         // POST: Products/Edit/5
         [HttpPost]

@@ -1,0 +1,76 @@
+﻿@model SportsShoesEcommerce.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+
+    var mainImage = Model.ProductImages?.FirstOrDefault(x => x.IsMain)?.ImagePath
+                    ?? Model.ProductImages?.FirstOrDefault()?.ImagePath
+                    ?? "/images/no-image.png";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="@mainImage" class="img-fluid rounded" />
+
+        <div class="d-flex mt-3 gap-2">
+            @if (Model.ProductImages != null)
+            {
+                foreach (var image in Model.ProductImages)
+                {
+                    <img src="@image.ImagePath"
+                         style="width:80px; height:80px; object-fit:cover;"
+                         class="border rounded" />
+                }
+            }
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h2>@Model.Name</h2>
+
+        <p class="text-muted">
+            @Model.Category?.Name | @Model.Brand?.Name
+        </p>
+
+        <h4>$@Model.Price</h4>
+
+        <p>@Model.Description</p>
+
+        <hr />
+
+        <h5>Available Options</h5>
+
+        @if (Model.ProductVariants != null && Model.ProductVariants.Any())
+        {
+            <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                <select name="productVariantId" class="form-control mb-3" required>
+                    <option value="">Select size / color</option>
+
+                    @foreach (var variant in Model.ProductVariants)
+                    {
+                        if (variant.StockQuantity > 0)
+                        {
+                            <option value="@variant.Id">
+                                Size: @variant.Size - Color: @variant.Color - Stock: @variant.StockQuantity - Price: $@variant.VariantPrice
+                            </option>
+                        }
+                        else
+                        {
+                            <option disabled>
+                                Size: @variant.Size - Color: @variant.Color - Out of Stock
+                            </option>
+                        }
+                    }
+                </select>
+
+                <button type="submit" class="btn btn-dark">
+                    Add To Cart
+                </button>
+            </form>
+        }
+        else
+        {
+            <p class="text-danger">No variants available.</p>
+        }
+    </div>
+</div>
