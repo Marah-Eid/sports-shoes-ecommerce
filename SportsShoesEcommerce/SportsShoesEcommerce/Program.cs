@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SportsShoesEcommerce.Data;
 using SportsShoesEcommerce.Data.Seeders;
 using SportsShoesEcommerce.Models;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
+
+StripeConfiguration.ApiKey =
+    builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 

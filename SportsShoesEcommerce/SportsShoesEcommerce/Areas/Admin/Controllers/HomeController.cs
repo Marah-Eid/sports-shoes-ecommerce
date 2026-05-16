@@ -1,6 +1,8 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SportsShoesEcommerce.Data;
 using SportsShoesEcommerce.Models;
+using System.Diagnostics;
 
 namespace SportsShoesEcommerce.Areas.Admin.Controllers
 {
@@ -8,15 +10,27 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> About()
+        {
+            var testimonials = await _context.Testimonials
+                .Where(t => t.IsApproved)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+
+            return View(testimonials);
         }
 
         public IActionResult Privacy()

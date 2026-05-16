@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +11,7 @@ using SportsShoesEcommerce.Models;
 namespace SportsShoesEcommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+>>>>>>> a099047efbf4c4b97063f574f29eef5efe3fb705:SportsShoesEcommerce/SportsShoesEcommerce/Areas/Admin/Controllers/OrdersController.cs
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,6 +21,34 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
             _context = context;
         }
 
+<<<<<<< HEAD:SportsShoesEcommerce/SportsShoesEcommerce/Controllers/OrdersController.cs
+        public async Task<IActionResult> MyOrders()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var orders = await _context.Orders
+                .Include(o => o.Payment)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+
+            return View(orders);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var order = await _context.Orders
+                .Include(o => o.Address)
+                .Include(o => o.Payment)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.ProductVariant)
+                        .ThenInclude(v => v.Product)
+                .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
+
+            if (order == null)
+=======
         // GET: Orders
         public async Task<IActionResult> Index()
         {
@@ -31,14 +60,34 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
+>>>>>>> a099047efbf4c4b97063f574f29eef5efe3fb705:SportsShoesEcommerce/SportsShoesEcommerce/Areas/Admin/Controllers/OrdersController.cs
             {
                 return NotFound();
             }
 
+<<<<<<< HEAD:SportsShoesEcommerce/SportsShoesEcommerce/Controllers/OrdersController.cs
+            return View(order);
+        }
+
+        public async Task<IActionResult> Invoice(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.Address)
+                .Include(o => o.Payment)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.ProductVariant)
+                        .ThenInclude(v => v.Product)
+                .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
+
+=======
             var order = await _context.Orders
                 .Include(o => o.Address)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+>>>>>>> a099047efbf4c4b97063f574f29eef5efe3fb705:SportsShoesEcommerce/SportsShoesEcommerce/Areas/Admin/Controllers/OrdersController.cs
             if (order == null)
             {
                 return NotFound();
@@ -46,6 +95,10 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
 
             return View(order);
         }
+<<<<<<< HEAD:SportsShoesEcommerce/SportsShoesEcommerce/Controllers/OrdersController.cs
+    }
+}
+=======
 
         // GET: Orders/Create
         public IActionResult Create()
@@ -169,3 +222,4 @@ namespace SportsShoesEcommerce.Areas.Admin.Controllers
         }
     }
 }
+>>>>>>> a099047efbf4c4b97063f574f29eef5efe3fb705:SportsShoesEcommerce/SportsShoesEcommerce/Areas/Admin/Controllers/OrdersController.cs
